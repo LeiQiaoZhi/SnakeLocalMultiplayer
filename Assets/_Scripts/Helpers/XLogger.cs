@@ -16,7 +16,8 @@ namespace UnityEngine
         Weapon,
         UI,
         DebugConsole,
-        Settings
+        Settings,
+        GridSystem
     }
     
     public static class XLogger
