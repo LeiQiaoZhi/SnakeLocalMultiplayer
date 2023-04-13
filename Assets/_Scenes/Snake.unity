@@ -479,6 +479,8 @@ GameObject:
   - component: {fileID: 649359143}
   - component: {fileID: 649359145}
   - component: {fileID: 649359144}
+  - component: {fileID: 649359146}
+  - component: {fileID: 649359147}
   m_Layer: 0
   m_Name: Snake
   m_TagString: Untagged
@@ -525,6 +527,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3fe235fb7c644cfcbae1143fd1e06c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leftKey: 97
+  rightKey: 100
+  topKey: 119
+  downKey: 115
+  tickInterval: 0.3
+--- !u!114 &649359146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 649359142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a95f83088869485aa2b29c35f63105a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  snakeBodyPrefab: {fileID: 2450894237632652229, guid: 1b108f2cb2b454066b97df1d1e435c49, type: 3}
+--- !u!114 &649359147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 649359142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a2406bf872064037a154bd0f9330424, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  length: 3
+  position: {x: 5, y: 5}
 --- !u!4 &829979147 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8630138793166244669, guid: 7ffa4636135fc9e4abbf8bde17edc831, type: 3}
