@@ -1,94 +1,97 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class DeathCountAchievement
+namespace _Scripts.Managers
 {
-    public int deathCount;
-    public int achievementIndex;
-}
-
-/// <summary>
-/// Singleton class for managing achievements
-/// Dependencies: <c>MessageManager</c>
-/// </summary>
-public class AchievementManager : MonoBehaviour
-{
-    // singleton
-    public static AchievementManager instance;
-
-    public List<string> achievementNames;
-    public List<DeathCountAchievement> deathCountAchievements;
-
-    private void Awake()
+    [System.Serializable]
+    public class DeathCountAchievement
     {
-        DontDestroyOnLoad(gameObject);
-        if(instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        public int deathCount;
+        public int achievementIndex;
     }
 
-    public int GetDeathCount()
+    /// <summary>
+    /// Singleton class for managing achievements
+    /// Dependencies: <c>MessageManager</c>
+    /// </summary>
+    public class AchievementManager : MonoBehaviour
     {
-        return PlayerPrefs.GetInt("Death Count", 0);
-    }
+        // singleton
+        public static AchievementManager instance;
 
-    public void IncreaseDeathCount()
-    {
-        int deathCount = PlayerPrefs.GetInt("Death Count", 0)+1;
-        PlayerPrefs.SetInt("Death Count", deathCount);
-        int achieved = -1;
-        foreach (var deathCountAchievement in deathCountAchievements)
+        public List<string> achievementNames;
+        public List<DeathCountAchievement> deathCountAchievements;
+
+        private void Awake()
         {
-            if (deathCountAchievement.deathCount <= deathCount)
+            DontDestroyOnLoad(gameObject);
+            if(instance == null)
             {
-                achieved = deathCountAchievement.achievementIndex;
-            } 
+                instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
-        if (achieved >= 0 && !IsAchievementUnlocked(achieved))
-        {
-            UnlockAchievement(achieved);
-            // dependency 
-            MessageManager.Instance.DisplayMessage($"Achievement unlocked: {achievementNames[achieved].ToUpper()}");
-        }
-    }
 
-    public bool IsAchievementUnlocked(string name)
-    {
-        if (!achievementNames.Contains(name))
+        public int GetDeathCount()
         {
-            Debug.Log("Achievement is not registered");
-            return false;
+            return PlayerPrefs.GetInt("Death Count", 0);
         }
-        bool unlocked = PlayerPrefs.GetInt(name,0) == 1;
-        return unlocked;
-    }
+
+        public void IncreaseDeathCount()
+        {
+            int deathCount = PlayerPrefs.GetInt("Death Count", 0)+1;
+            PlayerPrefs.SetInt("Death Count", deathCount);
+            int achieved = -1;
+            foreach (var deathCountAchievement in deathCountAchievements)
+            {
+                if (deathCountAchievement.deathCount <= deathCount)
+                {
+                    achieved = deathCountAchievement.achievementIndex;
+                } 
+            }
+            if (achieved >= 0 && !IsAchievementUnlocked(achieved))
+            {
+                UnlockAchievement(achieved);
+                // dependency 
+                MessageManager.Instance.DisplayMessage($"Achievement unlocked: {achievementNames[achieved].ToUpper()}");
+            }
+        }
+
+        public bool IsAchievementUnlocked(string name)
+        {
+            if (!achievementNames.Contains(name))
+            {
+                Debug.Log("Achievement is not registered");
+                return false;
+            }
+            bool unlocked = PlayerPrefs.GetInt(name,0) == 1;
+            return unlocked;
+        }
     
-     public bool IsAchievementUnlocked(int index)
-    {
-        bool unlocked = PlayerPrefs.GetInt(achievementNames[index],0) == 1;
-        return unlocked;
-    }
-
-    public void UnlockAchievement(int index)
-    {
-        PlayerPrefs.SetInt(achievementNames[index],1);
-    }
-
-    public void UnlockAchievement(string name)
-    {
-        if (!achievementNames.Contains(name))
+        public bool IsAchievementUnlocked(int index)
         {
-            Debug.Log("Achievement is not registered");
-            return;
+            bool unlocked = PlayerPrefs.GetInt(achievementNames[index],0) == 1;
+            return unlocked;
         }
-        PlayerPrefs.SetInt(name,1);
+
+        public void UnlockAchievement(int index)
+        {
+            PlayerPrefs.SetInt(achievementNames[index],1);
+        }
+
+        public void UnlockAchievement(string name)
+        {
+            if (!achievementNames.Contains(name))
+            {
+                Debug.Log("Achievement is not registered");
+                return;
+            }
+            PlayerPrefs.SetInt(name,1);
+        }
+
+
     }
-
-
 }

@@ -1,58 +1,60 @@
-﻿using System;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using Image = UnityEngine.UI.Image;
 
-public class Popup : MonoBehaviour
+namespace _Scripts.UI
 {
-    [SerializeField] GameObject titlebar;
-    [SerializeField] TextMeshProUGUI titleText;
-    [SerializeField] TextMeshProUGUI messageText;
-    [SerializeField] Animator animator;
-
-    [SerializeField] RectTransform buttonArea;
-    [SerializeField] private GameObject buttonPrefab;
-
-
-    private void Awake()
+    public class Popup : MonoBehaviour
     {
-    }
+        [SerializeField] GameObject titlebar;
+        [SerializeField] TextMeshProUGUI titleText;
+        [SerializeField] TextMeshProUGUI messageText;
+        [SerializeField] Animator animator;
 
-    public void Init(string title, string text, Color? titleColor)
-    {
-        if (title == "")
+        [SerializeField] RectTransform buttonArea;
+        [SerializeField] private GameObject buttonPrefab;
+
+
+        private void Awake()
         {
-            titlebar.SetActive(false);
         }
-        else
-        {
-            titlebar.SetActive(true);
-            titleText.text = title;
-            titleText.color = titleColor.GetValueOrDefault(Color.white);
-        }
-        messageText.text = text;
-    }
 
-    public void AddButton(string text, Color? color, UnityAction callback)
-    {
-        var buttonObject = Instantiate(buttonPrefab, buttonArea);
-        buttonObject.SetActive(true);
-        buttonObject.GetComponent<Image>().color = color.GetValueOrDefault(Color.white);
-        buttonObject.GetComponentInChildren<TextMeshProUGUI>().text = text;
-        buttonObject.GetComponent<Button>().onClick.AddListener(callback);
-    }
+        public void Init(string title, string text, Color? titleColor)
+        {
+            if (title == "")
+            {
+                titlebar.SetActive(false);
+            }
+            else
+            {
+                titlebar.SetActive(true);
+                titleText.text = title;
+                titleText.color = titleColor.GetValueOrDefault(Color.white);
+            }
+            messageText.text = text;
+        }
+
+        public void AddButton(string text, Color? color, UnityAction callback)
+        {
+            var buttonObject = Instantiate(buttonPrefab, buttonArea);
+            buttonObject.SetActive(true);
+            buttonObject.GetComponent<Image>().color = color.GetValueOrDefault(Color.white);
+            buttonObject.GetComponentInChildren<TextMeshProUGUI>().text = text;
+            buttonObject.GetComponent<Button>().onClick.AddListener(callback);
+        }
     
-    public void AddCancelButton(string text, Color? color)
-    {
-        var buttonObject = Instantiate(buttonPrefab, buttonArea);
-        buttonObject.SetActive(true);
-        buttonObject.GetComponent<Image>().color = color.GetValueOrDefault(Color.white);
-        buttonObject.GetComponentInChildren<TextMeshProUGUI>().text = text;
-        buttonObject.GetComponent<Button>().onClick.AddListener(() =>
+        public void AddCancelButton(string text, Color? color)
         {
-            Destroy(gameObject);
-        });
+            var buttonObject = Instantiate(buttonPrefab, buttonArea);
+            buttonObject.SetActive(true);
+            buttonObject.GetComponent<Image>().color = color.GetValueOrDefault(Color.white);
+            buttonObject.GetComponentInChildren<TextMeshProUGUI>().text = text;
+            buttonObject.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                Destroy(gameObject);
+            });
+        }
     }
 }

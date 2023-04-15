@@ -1,7 +1,9 @@
 using System;
 using System.Diagnostics;
+using UnityEngine;
+using Debug = UnityEngine.Debug;
 
-namespace UnityEngine
+namespace _Scripts.Helpers
 {
     public enum Category
     {
@@ -17,7 +19,9 @@ namespace UnityEngine
         UI,
         DebugConsole,
         Settings,
-        GridSystem
+        GridSystem,
+        Snake,
+        Pickup
     }
     
     public static class XLogger

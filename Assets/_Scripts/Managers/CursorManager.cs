@@ -1,43 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class CursorManager : MonoBehaviour
+namespace _Scripts.Managers
 {
-    public Sprite cursorSprite;
-    public bool useUI = true;
-    public RectTransform cursorUI;
-
-    SpriteRenderer _cursorSpriteRenderer;
-    private Camera _cam;
-
-
-    // Start is called before the first frame update
-    void Start()
+    public class CursorManager : MonoBehaviour
     {
-        _cam = Camera.main;
-        Cursor.visible = false;
-        if (!useUI)
-        {
-            _cursorSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
-            _cursorSpriteRenderer.sprite = cursorSprite;
-        }
-    }
+        public Sprite cursorSprite;
+        public bool useUI = true;
+        public RectTransform cursorUI;
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (useUI)
+        SpriteRenderer _cursorSpriteRenderer;
+        private Camera _cam;
+
+
+        // Start is called before the first frame update
+        void Start()
         {
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(cursorUI.parent as RectTransform,
-                Input.mousePosition,
-                null, out var mousePos);
-            cursorUI.anchoredPosition = mousePos;
+            _cam = Camera.main;
+            Cursor.visible = false;
+            if (!useUI)
+            {
+                _cursorSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
+                _cursorSpriteRenderer.sprite = cursorSprite;
+            }
         }
-        else
+
+        // Update is called once per frame
+        void Update()
         {
-            Vector2 mousePos = _cam.ScreenToWorldPoint(Input.mousePosition);
-            _cursorSpriteRenderer.transform.position = mousePos;
+            if (useUI)
+            {
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(cursorUI.parent as RectTransform,
+                    Input.mousePosition,
+                    null, out var mousePos);
+                cursorUI.anchoredPosition = mousePos;
+            }
+            else
+            {
+                Vector2 mousePos = _cam.ScreenToWorldPoint(Input.mousePosition);
+                _cursorSpriteRenderer.transform.position = mousePos;
+            }
         }
     }
 }

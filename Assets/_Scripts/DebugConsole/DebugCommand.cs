@@ -1,21 +1,22 @@
-using System.Collections;
-
-public class DebugCommand
+namespace _Scripts.DebugConsole
 {
-    public readonly string CommandName;
-    public delegate string DebugAction(DebugConsole debugConsole);
-
-    public readonly DebugAction action;
-
-    // constructor
-    public DebugCommand(string name, DebugAction a)
+    public class DebugCommand
     {
-        CommandName = name;
-        action = a;
-    }
+        public readonly string CommandName;
+        public delegate string DebugAction(DebugConsole debugConsole);
 
-    public string Raise(DebugConsole debugConsole)
-    {
-        return action.Invoke(debugConsole);
+        public readonly DebugAction action;
+
+        // constructor
+        public DebugCommand(string name, DebugAction a)
+        {
+            CommandName = name;
+            action = a;
+        }
+
+        public string Raise(DebugConsole debugConsole)
+        {
+            return action.Invoke(debugConsole);
+        }
     }
 }

@@ -1,20 +1,20 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class FixedUpdateCursorPos : MonoBehaviour
+namespace _Scripts
 {
-    private Camera _cam;
-
-    private void Awake()
+    public class FixedUpdateCursorPos : MonoBehaviour
     {
-        _cam = Camera.main;
-    }
+        private Camera _cam;
 
-    private void FixedUpdate()
-    {
-        var mousePos = _cam.ScreenToWorldPoint(Input.mousePosition);
-        transform.position = mousePos;
+        private void Awake()
+        {
+            _cam = Camera.main;
+        }
+
+        private void FixedUpdate()
+        {
+            var mousePos = _cam.ScreenToWorldPoint(Input.mousePosition);
+            transform.position = mousePos;
+        }
     }
 }

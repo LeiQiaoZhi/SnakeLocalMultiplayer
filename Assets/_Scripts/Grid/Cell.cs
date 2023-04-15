@@ -1,67 +1,66 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.UI;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-public class Cell : MonoBehaviour
+namespace _Scripts.Grid
 {
-    public int x;
-    public int y;
-    [Header("Appearance")]
-    public SpriteRenderer spriteRenderer;
-    public Color color1;
-    public Color color2;
-
-    private GridSystem gridSystem;
-
-    public void Init(int _x, int _y, GridSystem grid)
+    public class Cell : MonoBehaviour
     {
-        x = _x;
-        y = _y;
-        gridSystem = grid;
+        public int x;
+        public int y;
+        [Header("Appearance")]
+        public SpriteRenderer spriteRenderer;
+        public Color color1;
+        public Color color2;
 
-        // alternate colors
-        if ((x+y) % 2 == 0)
-        {
-            spriteRenderer.color = color1;
-        }
-        else
-        {
-            spriteRenderer.color = color2;
-        }
-    }
+        private GridSystem gridSystem;
 
-    public List<Cell> GetNeighbours()
-    {
-        List<Cell> neighbours = new List<Cell>();
-        var top = gridSystem.GetCell(x, y + 1);
-        if (top)
+        public void Init(int _x, int _y, GridSystem grid)
         {
-            neighbours.Add(top);
-        }
+            x = _x;
+            y = _y;
+            gridSystem = grid;
 
-        var down = gridSystem.GetCell(x, y - 1);
-        if (down)
-        {
-            neighbours.Add(down);
+            // alternate colors
+            if ((x+y) % 2 == 0)
+            {
+                spriteRenderer.color = color1;
+            }
+            else
+            {
+                spriteRenderer.color = color2;
+            }
         }
 
-        var left = gridSystem.GetCell(x - 1, y);
-        if (left)
+        public List<Cell> GetNeighbours()
         {
-            neighbours.Add(left);
-        }
+            List<Cell> neighbours = new List<Cell>();
+            var top = gridSystem.GetCell(x, y + 1);
+            if (top)
+            {
+                neighbours.Add(top);
+            }
 
-        var right = gridSystem.GetCell(x + 1, y);
-        if (right)
-        {
-            neighbours.Add(right);
-        }
+            var down = gridSystem.GetCell(x, y - 1);
+            if (down)
+            {
+                neighbours.Add(down);
+            }
 
-        return neighbours;
-    }
+            var left = gridSystem.GetCell(x - 1, y);
+            if (left)
+            {
+                neighbours.Add(left);
+            }
+
+            var right = gridSystem.GetCell(x + 1, y);
+            if (right)
+            {
+                neighbours.Add(right);
+            }
+
+            return neighbours;
+        }
 
     
+    }
 }

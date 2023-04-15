@@ -1,36 +1,37 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using _Scripts.Managers;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ToolTipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+namespace _Scripts.UI
 {
-    public string header;
-    public string content;
-
-    private void OnMouseEnter()
+    public class ToolTipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        ToolTipManager.Instance.ShowToolTip(header,content);
-    }
+        public string header;
+        public string content;
 
-    private void OnMouseExit()
-    {
-        ToolTipManager.Instance.HideToolTip();
-    }
+        private void OnMouseEnter()
+        {
+            ToolTipManager.Instance.ShowToolTip(header,content);
+        }
 
-    private void OnDisable()
-    {
-        ToolTipManager.Instance.HideToolTip();
-    }
+        private void OnMouseExit()
+        {
+            ToolTipManager.Instance.HideToolTip();
+        }
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        ToolTipManager.Instance.ShowToolTip(header,content);
-    }
+        private void OnDisable()
+        {
+            ToolTipManager.Instance.HideToolTip();
+        }
 
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        ToolTipManager.Instance.HideToolTip();
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            ToolTipManager.Instance.ShowToolTip(header,content);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            ToolTipManager.Instance.HideToolTip();
+        }
     }
 }

@@ -1,52 +1,79 @@
-using System.Collections;
 using System.Collections.Generic;
+using _Scripts.Helpers;
 using UnityEngine;
 
-[RequireComponent(typeof(SnakeRenderer))]
-public class SnakeMovement : MonoBehaviour
+namespace _Scripts.Snake
 {
-    /// <summary>
-    /// coordinates of body cells in grid system
-    /// </summary>
-    public List<Vector2Int> bodyPositions = new();
-
-    private Direction currentDirection = Direction.Top();
-    private SnakeRenderer snakeRenderer;
-
-    private void Awake()
+    [RequireComponent(typeof(SnakeRenderer))]
+    public class SnakeMovement : MonoBehaviour
     {
-        snakeRenderer = GetComponent<SnakeRenderer>();
-    }
+        /// <summary>
+        /// coordinates of body cells in grid system
+        /// </summary>
+        public List<Vector2Int> bodyPositions = new();
 
-    public List<Vector2Int> GetPositions()
-    {
-        return bodyPositions;
-    }
+        private Direction currentDirection = Direction.Top();
+        private SnakeRenderer snakeRenderer;
 
-    // ReSharper disable Unity.PerformanceAnalysis
-    /// <summary>
-    /// moves snake in given direction
-    /// </summary>
-    /// <param name="direction"></param>
-    public void Move(Direction direction)
-    {
-        if (direction.Opposite().Equals(currentDirection))
+        private void Awake()
         {
-            // not valid movement
-            direction = currentDirection;
+            snakeRenderer = GetComponent<SnakeRenderer>();
         }
 
-        currentDirection = direction;
+        public List<Vector2Int> GetPositions()
+        {
+            return bodyPositions;
+        }
 
-        // first is head
-        bodyPositions.Insert(0, bodyPositions[0] + direction.changeOfCoord);
-        bodyPositions.RemoveAt(bodyPositions.Count - 1);
+        // ReSharper disable Unity.PerformanceAnalysis
+        /// <summary>
+        /// moves snake in given direction
+        /// </summary>
+        /// <param name="direction"></param>
+        public void Move(Direction direction)
+        {
+            if (direction.Opposite().Equals(currentDirection))
+            {
+                // not valid movement
+                direction = currentDirection;
+            }
 
-        snakeRenderer.RenderSnake(bodyPositions);
-    }
+            currentDirection = direction;
 
-    public void SetPositions(List<Vector2Int> positions)
-    {
-        bodyPositions = positions;
+            // first is head
+            var gameOver = false;
+            var newHeadPosition = bodyPositions[0] + direction.changeOfCoord;
+            if (SnakeGameManager.Instance.IsColliding(newHeadPosition))
+            {
+                XLogger.LogWarning(Category.Snake, "Snake collided with itself, others or out of bounds");
+                gameOver = true;
+            }
+            else if (PickupManager.Instance.IsOccupiedByPickup(newHeadPosition))
+            {
+                // apply effect
+                PickupManager.Instance.ApplyPickup(newHeadPosition, gameObject);
+            }
+
+            bodyPositions.Insert(0, newHeadPosition);
+            bodyPositions.RemoveAt(bodyPositions.Count - 1);
+
+            snakeRenderer.RenderSnake(bodyPositions);
+            if (gameOver)
+            {
+                SnakeGameManager.Instance.GameOver(gameObject);
+            }
+        }
+
+        public void SetPositions(List<Vector2Int> positions)
+        {
+            bodyPositions = positions;
+        }
+
+        public void Grow()
+        {
+            bodyPositions.Add(bodyPositions[^1] + bodyPositions[^1] - bodyPositions[^2]);
+            snakeRenderer.Grow();
+            snakeRenderer.RenderSnake(bodyPositions);
+        }
     }
 }

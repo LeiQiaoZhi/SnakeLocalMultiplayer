@@ -1,12 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SelectOnDefault : MonoBehaviour
+namespace _Scripts.UI
 {
-    private void Start()
+    public class SelectOnDefault : MonoBehaviour
     {
-        GetComponent<Button>().Select();
+        private void Start()
+        {
+            GetComponent<Button>().Select();
+        }
     }
 }
