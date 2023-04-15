@@ -544,6 +544,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a95f83088869485aa2b29c35f63105a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  snakeHeadPrefab: {fileID: 2450894237632652229, guid: 1a30c79c2de1a0948b141f9c11b32940, type: 3}
   snakeBodyPrefab: {fileID: 2450894237632652229, guid: 1b108f2cb2b454066b97df1d1e435c49, type: 3}
 --- !u!114 &649359147
 MonoBehaviour:
@@ -597,6 +598,7 @@ MonoBehaviour:
   height: 15
   margin: 0.05
   cellPrefab: {fileID: 2450894237632652229, guid: b2fb116f88e924199bfdce88202ea53b, type: 3}
+  cellDimension: {x: 0, y: 0}
 --- !u!4 &922867738
 Transform:
   m_ObjectHideFlags: 0
@@ -918,7 +920,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 1fe21feb6df45b34fa2ea77580ca82b8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

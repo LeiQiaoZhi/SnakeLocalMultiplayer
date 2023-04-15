@@ -20,13 +20,12 @@ public class GridSystem : MonoBehaviour
     private List<Cell> cells = new List<Cell>();
 
     public Vector2 cellDimension;
-    private Vector2 botLeft;
 
     private void Awake()
     {
         // find suitable world width and height for the grid
-        botLeft = Camera.main.ViewportToWorldPoint(Vector2.zero) * (1 - 2 * margin);
-        Vector2 topRight = Camera.main.ViewportToWorldPoint(Vector2.one) * (1 - 2 * margin);
+        var botLeft = Camera.main.ViewportToWorldPoint(Vector2.zero) * (1 - 2 * margin);
+        var topRight = Camera.main.ViewportToWorldPoint(Vector2.one) * (1 - 2 * margin);
         XLogger.Log(Category.GridSystem, $"bot left in world coord: {botLeft}");
         XLogger.Log(Category.GridSystem, $"top right in world coord: {topRight}");
         var cellWidth = (topRight - botLeft).x / width;
@@ -63,14 +62,10 @@ public class GridSystem : MonoBehaviour
         {
             for (int x = 0; x < width; x++)
             {
-                // calculate cell's position
-                var pos = new Vector2(
-                    (-width / 2f + 0.5f + x) * cellDimension.x,
-                    (-height / 2f + 0.5f + y) * cellDimension.y
-                );
                 // create the cell
-                var cellObject = Instantiate(cellPrefab, pos, Quaternion.identity);
+                var cellObject = Instantiate(cellPrefab, CellToWorldPosition(x,y), Quaternion.identity);
                 cellObject.transform.localScale = cellDimension;
+                cellObject.transform.SetParent(transform);
                 var cell = cellObject.GetComponent<Cell>();
                 cell.Init(x, y, this);
                 cells.Add(cell);
@@ -101,8 +96,11 @@ public class GridSystem : MonoBehaviour
 
     public Vector2 CellToWorldPosition(int x, int y)
     {
-        float worldX = botLeft.x + x * cellDimension.x;
-        float worldY = botLeft.y + y * cellDimension.y;
-        return new Vector2(worldX, worldY);
+        // calculate cell's position
+        var pos = new Vector2(
+            (-width / 2f + 0.5f + x) * cellDimension.x,
+            (-height / 2f + 0.5f + y) * cellDimension.y
+        );
+        return pos;
     }
 }

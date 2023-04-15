@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,11 +23,15 @@ public class SnakeInput : MonoBehaviour
         snakeMovement = GetComponent<SnakeMovement>();
     }
 
+    private void Update()
+    {
+        direction = GetInputDirection();
+    }
+
     public IEnumerator SnakeInputCoroutine()
     {
         while (true)
         {
-            direction = GetInputDirection();
             XLogger.Log(direction.changeOfCoord);
             snakeMovement.Move(direction);
             yield return new WaitForSeconds(tickInterval);

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SnakeRenderer : MonoBehaviour
 {
+    public GameObject snakeHeadPrefab;
     public GameObject snakeBodyPrefab;
 
     private List<GameObject> snakeBodies;
@@ -19,7 +20,7 @@ public class SnakeRenderer : MonoBehaviour
         snakeBodies = new List<GameObject>();
         for (int i = 0; i < length; i++)
         {
-            var body = Instantiate(snakeBodyPrefab, transform);
+            var body = Instantiate((i==0)?snakeHeadPrefab:snakeBodyPrefab, transform);
             snakeBodies.Add(body);
         }
     }
@@ -33,7 +34,7 @@ public class SnakeRenderer : MonoBehaviour
         for (int i = 0; i < bodyPositions.Count; i++)
         {
             var worldPos = gridSystem.CellToWorldPosition(
-                            bodyPositions[i].x, bodyPositions[i].y) + + 0.5f * gridSystem.cellDimension;
+                            bodyPositions[i].x, bodyPositions[i].y);
             snakeBodies[i].transform.position = worldPos;
         }
     }

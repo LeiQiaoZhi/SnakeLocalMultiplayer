@@ -6,9 +6,9 @@ using UnityEngine;
 public class SnakeMovement : MonoBehaviour
 {
     /// <summary>
-    /// coordinates of body cells in grid
+    /// coordinates of body cells in grid system
     /// </summary>
-    private List<Vector2Int> bodyPositions = new List<Vector2Int>();
+    public List<Vector2Int> bodyPositions = new();
 
     private Direction currentDirection = Direction.Top();
     private SnakeRenderer snakeRenderer;
@@ -17,17 +17,29 @@ public class SnakeMovement : MonoBehaviour
     {
         snakeRenderer = GetComponent<SnakeRenderer>();
     }
-    
+
+    public List<Vector2Int> GetPositions()
+    {
+        return bodyPositions;
+    }
+
+    // ReSharper disable Unity.PerformanceAnalysis
+    /// <summary>
+    /// moves snake in given direction
+    /// </summary>
+    /// <param name="direction"></param>
     public void Move(Direction direction)
     {
-        if (direction.Opposite() == currentDirection)
+        if (direction.Opposite().Equals(currentDirection))
         {
             // not valid movement
             direction = currentDirection;
         }
-        
+
+        currentDirection = direction;
+
         // first is head
-        bodyPositions.Insert(0,bodyPositions[0]+direction.changeOfCoord);
+        bodyPositions.Insert(0, bodyPositions[0] + direction.changeOfCoord);
         bodyPositions.RemoveAt(bodyPositions.Count - 1);
 
         snakeRenderer.RenderSnake(bodyPositions);
