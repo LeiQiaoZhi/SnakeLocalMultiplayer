@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using _Scripts.Grid;
 using _Scripts.Helpers;
 using _Scripts.Managers;
+using _Scripts.GameEventSystem;
 using UnityEngine;
 
 namespace _Scripts.Snake
@@ -12,7 +14,9 @@ namespace _Scripts.Snake
     /// </summary>
     public class SnakeGameManager : MonoBehaviour
     {
-        public List<SnakeMovement> snakes = new List<SnakeMovement>();
+        public GameEvent gameStartEvent;
+        private List<SnakeInitializer> snakes = new List<SnakeInitializer>();
+        
         private GridSystem gridSystem;
         private int height;
         private int width;
@@ -33,6 +37,19 @@ namespace _Scripts.Snake
             {
                 Destroy(gameObject);
             }
+        }
+
+        /// <summary>
+        /// starts the game
+        /// </summary>
+        public void StartGame()
+        {
+            snakes = FindObjectsOfType<SnakeInitializer>().ToList();
+            foreach (var snakeInitializer in snakes)
+            {
+                snakeInitializer.Init();
+            }
+            gameStartEvent.Raise();
         }
 
         private void Start()
@@ -75,7 +92,8 @@ namespace _Scripts.Snake
 
             foreach (var snake in snakes)
             {
-                foreach (var bodyPosition in snake.GetPositions())
+                var snakeMovement = snake.GetComponent<SnakeMovement>();
+                foreach (var bodyPosition in snakeMovement.GetPositions())
                 {
                     if (bodyPosition.x == x && bodyPosition.y == y)
                     {

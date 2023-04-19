@@ -1,7 +1,9 @@
 using System;
 using _Scripts.Helpers;
+using _Scripts.Snake;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Serialization;
 
 namespace _Scripts.Managers
 {
@@ -11,6 +13,13 @@ namespace _Scripts.Managers
     public class UIManager : MonoBehaviour
     {
         public TextMeshProUGUI gameOverText;
+
+        [Header("Canvas")]
+        [FormerlySerializedAs("startScreen")] [SerializeField]
+        private GameObject startCanvas;
+        [SerializeField] GameObject gameCanvas;
+
+        [Header("Panels")]
         [SerializeField] private GameObject gameOverScreen;
         [SerializeField] private GameObject levelEndScreen;
         [SerializeField] private GameObject pauseScreen;
@@ -28,8 +37,22 @@ namespace _Scripts.Managers
                 Destroy(gameObject);
             }
 
-            SetEnableGameOverScreen(false,"Game Over", Color.red);
+            SetEnableStartScreen(true);
+            SetEnableGameOverScreen(false, "Game Over", Color.red);
             SetEnableLevelEndScreen(false);
+            SetEnableGameCanvas(false);
+        }
+
+        public void StartGame()
+        {
+            SnakeGameManager.Instance.StartGame();
+            SetEnableStartScreen(false);
+            SetEnableGameCanvas(true);
+        }
+        
+        public void SetEnableGameCanvas(bool enable)
+        {
+            gameCanvas.SetActive(enable);
         }
 
         public void SetEnableGameOverScreen(bool enable, string gameOverTextContent, Color color)
@@ -42,6 +65,11 @@ namespace _Scripts.Managers
         public void SetEnableLevelEndScreen(bool enable)
         {
             levelEndScreen.SetActive(enable);
+        }
+
+        public void SetEnableStartScreen(bool enable)
+        {
+            startCanvas.SetActive(enable);
         }
 
         public void DisplayAchievementUnlockMessage(int i)

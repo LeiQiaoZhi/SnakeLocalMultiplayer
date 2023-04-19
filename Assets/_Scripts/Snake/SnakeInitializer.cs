@@ -26,10 +26,9 @@ namespace _Scripts.Snake
             snakeInput = GetComponent<SnakeInput>();
             snakeMovement = GetComponent<SnakeMovement>();
             snakeRenderer = GetComponent<SnakeRenderer>();
-            Init();
         }
 
-        private void Init()
+        public void Init()
         {
             snakeRenderer.InitBodies(length);
             var positions = new List<Vector2Int>();
