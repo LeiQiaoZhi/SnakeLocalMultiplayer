@@ -2862,7 +2862,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &437278415
 MonoBehaviour:
@@ -5918,7 +5918,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &807383686
 GameObject:
@@ -6288,6 +6288,9 @@ GameObject:
   m_Component:
   - component: {fileID: 834245471}
   - component: {fileID: 834245470}
+  - component: {fileID: 834245472}
+  - component: {fileID: 834245474}
+  - component: {fileID: 834245473}
   m_Layer: 0
   m_Name: SnakeManager
   m_TagString: Untagged
@@ -6322,8 +6325,78 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &834245472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 834245469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86208a6d06f6d49d781ddba819bcef4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreBoard: {fileID: 4344630199460429042}
+  scoreObjectPrefab: {fileID: 1841118564999241382, guid: a6a5f1d8ce1ba4f678863d9ad3fec6dd, type: 3}
+--- !u!114 &834245473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 834245469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db64a66747c59d04db81eced9d2de940, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  event: {fileID: 11400000, guid: 510d3099a01154aa7b962cabe2c2021a, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 834245472}
+        m_TargetAssemblyTypeName: ScoreManager, Assembly-CSharp
+        m_MethodName: UpdateScore
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &834245474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 834245469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db64a66747c59d04db81eced9d2de940, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  event: {fileID: 11400000, guid: 2291a06fd2fdf2a4d9da4050e2d7774c, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 834245472}
+        m_TargetAssemblyTypeName: ScoreManager, Assembly-CSharp
+        m_MethodName: InitScoreBoard
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &840946680
 GameObject:
   m_ObjectHideFlags: 0
@@ -7412,7 +7485,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &930648575
 GameObject:
@@ -8182,7 +8255,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1789372219}
     m_Modifications:
     - target: {fileID: 274911039, guid: afc9e0cc663eb5a4ba03cf61348d146c, type: 3}
       propertyPath: m_SizeDelta.x
@@ -8246,7 +8319,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1787050490514039359, guid: afc9e0cc663eb5a4ba03cf61348d146c, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1787050490514039359, guid: afc9e0cc663eb5a4ba03cf61348d146c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8290,6 +8363,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afc9e0cc663eb5a4ba03cf61348d146c, type: 3}
+--- !u!4 &995545277 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1787050490514039359, guid: afc9e0cc663eb5a4ba03cf61348d146c, type: 3}
+  m_PrefabInstance: {fileID: 995545276}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1000801419
 GameObject:
   m_ObjectHideFlags: 0
@@ -10489,7 +10567,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f3e41d82a3c74c52850b370f1f9f5e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bodyPositions: []
+  growEvent: {fileID: 0}
 --- !u!114 &1239032723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13821,6 +13899,7 @@ Transform:
   - {fileID: 1837151928}
   - {fileID: 1015486169}
   - {fileID: 829979147}
+  - {fileID: 995545277}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -15680,7 +15759,7 @@ Transform:
   - {fileID: 94653710}
   - {fileID: 2084423754}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1957473721
 GameObject:
@@ -17221,7 +17300,7 @@ Transform:
   - {fileID: 649359143}
   - {fileID: 1239032724}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2124826814
 GameObject:
@@ -18030,6 +18109,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 235160131561a22488b82f8496e891da, type: 3}
+--- !u!224 &4344630199460429042 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3833448059808031428, guid: 235160131561a22488b82f8496e891da, type: 3}
+  m_PrefabInstance: {fileID: 4344630199460429041}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4663850809077106390
 PrefabInstance:
   m_ObjectHideFlags: 0

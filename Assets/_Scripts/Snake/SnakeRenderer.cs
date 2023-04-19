@@ -59,5 +59,10 @@ namespace _Scripts.Snake
             this.headColor = headColor;
             this.bodyColor = bodyColor;
         }
+
+        public Color GetColor()
+        {
+            return headColor;
+        }
     }
 }

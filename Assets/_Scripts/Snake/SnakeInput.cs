@@ -13,6 +13,8 @@ namespace _Scripts.Snake
         private KeyCode downKey;
 
         public float tickInterval = 0.3f;
+        public float tickMultiplier = 0.95f;
+        public float accelerateInterval = 5f;
 
         private SnakeMovement snakeMovement;
         private Direction direction = Direction.Top();
@@ -30,11 +32,21 @@ namespace _Scripts.Snake
 
         public IEnumerator SnakeInputCoroutine()
         {
+            StartCoroutine(Accelerate());
             while (true)
             {
                 XLogger.Log(direction.changeOfCoord);
                 snakeMovement.Move(direction);
                 yield return new WaitForSeconds(tickInterval);
+            }
+        }
+        
+        IEnumerator Accelerate()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(accelerateInterval);
+                tickInterval *= tickMultiplier;
             }
         }
 

@@ -18,9 +18,12 @@ namespace _Scripts.Snake
         private SnakeMovement snakeMovement;
         private SnakeInput snakeInput;
         private GridSystem gridSystem;
+        // ReSharper disable once InconsistentNaming
+        private SnakeInitInfo _snakeInitInfo;
 
         public void Init(SnakeInitInfo snakeInitInfo, Vector2Int position)
         {
+            _snakeInitInfo = snakeInitInfo;
             gridSystem = FindObjectOfType<GridSystem>();
             snakeInput = GetComponent<SnakeInput>();
             snakeMovement = GetComponent<SnakeMovement>();
@@ -40,6 +43,16 @@ namespace _Scripts.Snake
             snakeMovement.SetPositions(positions);
             snakeRenderer.RenderSnake(positions);
             snakeInput.StartCoroutine(snakeInput.SnakeInputCoroutine());
+        }
+        
+        public Color GetColor()
+        {
+            return _snakeInitInfo.color;
+        }
+
+        public int GetLength()
+        {
+            return snakeMovement.GetLength();
         }
     }
 }

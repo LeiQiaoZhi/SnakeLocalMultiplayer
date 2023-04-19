@@ -22,6 +22,7 @@ namespace _Scripts.Snake
         private GridSystem gridSystem;
         private int height;
         private int width;
+        private List<SnakeInitializer> aliveSnakes= new List<SnakeInitializer>();
 
         public static SnakeGameManager Instance { get; private set; }
 
@@ -56,8 +57,15 @@ namespace _Scripts.Snake
                 snakeInitializer.Init(snakeInitInfo, spawnPositions[i]);
                 snakes.Add(snakeInitializer);
             }
+            
+            aliveSnakes = snakes.ToList();
 
             gameStartEvent.Raise();
+        }
+        
+        public List<SnakeInitializer> GetSnakes()
+        {
+            return snakes;
         }
 
         private void Start()
@@ -98,7 +106,7 @@ namespace _Scripts.Snake
                 return true;
             }
 
-            foreach (var snake in snakes)
+            foreach (var snake in aliveSnakes)
             {
                 var snakeMovement = snake.GetComponent<SnakeMovement>();
                 foreach (var bodyPosition in snakeMovement.GetPositions())
@@ -118,14 +126,52 @@ namespace _Scripts.Snake
             return IsColliding(newHeadPosition.x, newHeadPosition.y);
         }
 
-        public void GameOver(GameObject loser)
+        private void GameOver(SnakeInitializer winner)
         {
-            var winner = snakes.Find(snake => snake.name != loser.name);
-            var text = $"{winner.name} wins!";
+            var text = $"{winner.gameObject.name} wins!";
             var winColor = winner.GetComponentsInChildren<SpriteRenderer>()[0].color;
             XLogger.LogWarning(Category.Snake, text);
             UIManager.Instance.SetEnableGameOverScreen(true, text, winColor);
             Time.timeScale = 0;
+        }
+
+        private void Draw(List<SnakeInitializer> winners)
+        {
+            // concat winners' names
+            var text = winners.Aggregate("", (current, winner) => current + (winner.gameObject.name + ","));
+            text += $"Draw between {text}";
+            var winColor = Color.white;
+            XLogger.LogWarning(Category.Snake, text);
+            UIManager.Instance.SetEnableGameOverScreen(true, text, winColor);
+            Time.timeScale = 0;
+        }
+
+        public void SnakeDies(SnakeMovement deadMovement)
+        {
+            aliveSnakes.Remove(deadMovement.GetComponent<SnakeInitializer>());
+            if (aliveSnakes.Count == 0)
+            {
+                var candidates = ScoreManager.Instance.GetHighestScoreSnakes();
+                if (candidates.Count == 1)
+                {
+                    GameOver(candidates[0]);
+                    return;
+                }
+
+                // if there are more than one snakes with the same highest score and there is one last snake alive
+                if (deadMovement.GetComponent<SnakeInitializer>().GetLength() == candidates[0].GetLength())
+                {
+                    GameOver(deadMovement.GetComponent<SnakeInitializer>());
+                    return;
+                }
+                
+                // draw between already dead snakes
+                Draw(candidates);
+                return;
+
+            }
+            
+            deadMovement.gameObject.SetActive(false);
         }
     }
 }

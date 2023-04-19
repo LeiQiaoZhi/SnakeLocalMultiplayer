@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using _Scripts.GameEventSystem;
 using _Scripts.Helpers;
 using UnityEngine;
 
@@ -7,10 +8,11 @@ namespace _Scripts.Snake
     [RequireComponent(typeof(SnakeRenderer))]
     public class SnakeMovement : MonoBehaviour
     {
+        public GameEvent growEvent;
         /// <summary>
         /// coordinates of body cells in grid system
         /// </summary>
-        public List<Vector2Int> bodyPositions = new();
+        private List<Vector2Int> bodyPositions = new();
 
         private Direction currentDirection = Direction.Top();
         private SnakeRenderer snakeRenderer;
@@ -60,7 +62,7 @@ namespace _Scripts.Snake
             snakeRenderer.RenderSnake(bodyPositions);
             if (gameOver)
             {
-                SnakeGameManager.Instance.GameOver(gameObject);
+                SnakeGameManager.Instance.SnakeDies(this);
             }
         }
 
@@ -74,6 +76,12 @@ namespace _Scripts.Snake
             bodyPositions.Add(bodyPositions[^1] + bodyPositions[^1] - bodyPositions[^2]);
             snakeRenderer.Grow();
             snakeRenderer.RenderSnake(bodyPositions);
+            growEvent.Raise();
+        }
+        
+        public int GetLength()
+        {
+            return bodyPositions.Count;
         }
     }
 }
