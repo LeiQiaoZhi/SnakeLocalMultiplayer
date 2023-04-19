@@ -45,7 +45,7 @@ namespace _Scripts.Managers
 
         public void StartGame()
         {
-            SnakeGameManager.Instance.StartGame();
+            SnakeSelectionManager.Instance.StartGame();
             SetEnableStartScreen(false);
             SetEnableGameCanvas(true);
         }

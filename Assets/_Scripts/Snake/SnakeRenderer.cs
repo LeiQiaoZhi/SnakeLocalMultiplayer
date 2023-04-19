@@ -9,8 +9,9 @@ namespace _Scripts.Snake
     {
         public GameObject snakeHeadPrefab;
         public GameObject snakeBodyPrefab;
-        [Header("Color")] [SerializeField] private Color headColor;
-        [SerializeField] private Color bodyColor;
+        [Header("Color")] 
+        private Color headColor;
+        private Color bodyColor;
 
         private List<GameObject> snakeBodies;
         private GridSystem gridSystem;
@@ -51,6 +52,12 @@ namespace _Scripts.Snake
             var body = Instantiate(snakeBodyPrefab, transform);
             body.GetComponentInChildren<SpriteRenderer>().color = bodyColor;
             snakeBodies.Add(body);
+        }
+        
+        public void SetColors(Color headColor, Color bodyColor)
+        {
+            this.headColor = headColor;
+            this.bodyColor = bodyColor;
         }
     }
 }

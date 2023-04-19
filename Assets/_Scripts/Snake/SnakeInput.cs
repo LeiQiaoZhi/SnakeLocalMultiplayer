@@ -7,10 +7,10 @@ namespace _Scripts.Snake
     [RequireComponent(typeof(SnakeMovement))]
     public class SnakeInput : MonoBehaviour
     {
-        public KeyCode leftKey;
-        public KeyCode rightKey;
-        public KeyCode topKey;
-        public KeyCode downKey;
+        private KeyCode leftKey;
+        private KeyCode rightKey;
+        private KeyCode topKey;
+        private KeyCode downKey;
 
         public float tickInterval = 0.3f;
 
@@ -36,6 +36,14 @@ namespace _Scripts.Snake
                 snakeMovement.Move(direction);
                 yield return new WaitForSeconds(tickInterval);
             }
+        }
+
+        public void SetControls(ControlOption controlOption)
+        {
+            leftKey = controlOption.left;
+            rightKey = controlOption.right;
+            topKey = controlOption.up;
+            downKey = controlOption.down;
         }
 
         private Direction GetInputDirection()

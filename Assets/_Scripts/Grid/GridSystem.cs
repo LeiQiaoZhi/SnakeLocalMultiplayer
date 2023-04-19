@@ -105,5 +105,20 @@ namespace _Scripts.Grid
             );
             return pos;
         }
+
+        public List<Vector2Int> GetSpawnPositions(int count)
+        {
+            // generate spawn positions evenly distributed
+            var spawnPositions = new List<Vector2Int>();
+            var xStep = width / (count + 1);
+            // all positions share the same y
+            var y = height / 2;
+            for (int i = 0; i < count; i++)
+            {
+                var x = (i + 1) * xStep;
+                spawnPositions.Add(new Vector2Int(x, y));
+            }
+            return spawnPositions;
+        }
     }
 }

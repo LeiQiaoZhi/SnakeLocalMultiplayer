@@ -6,6 +6,7 @@ using _Scripts.Helpers;
 using _Scripts.Managers;
 using _Scripts.GameEventSystem;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace _Scripts.Snake
 {
@@ -15,8 +16,9 @@ namespace _Scripts.Snake
     public class SnakeGameManager : MonoBehaviour
     {
         public GameEvent gameStartEvent;
-        private List<SnakeInitializer> snakes = new List<SnakeInitializer>();
+        public GameObject snakePrefab;
         
+        private List<SnakeInitializer> snakes = new List<SnakeInitializer>();
         private GridSystem gridSystem;
         private int height;
         private int width;
@@ -42,13 +44,19 @@ namespace _Scripts.Snake
         /// <summary>
         /// starts the game
         /// </summary>
-        public void StartGame()
+        public void StartGame(List<SnakeInitInfo> snakeInitInfos)
         {
-            snakes = FindObjectsOfType<SnakeInitializer>().ToList();
-            foreach (var snakeInitializer in snakes)
+            var spawnPositions = gridSystem.GetSpawnPositions(snakeInitInfos.Count);
+            for (var i = 0; i < snakeInitInfos.Count; i++)
             {
-                snakeInitializer.Init();
+                var snakeInitInfo = snakeInitInfos[i];
+                var snake = Instantiate(snakePrefab, transform);
+                snake.name = snakeInitInfo.name;
+                var snakeInitializer = snake.GetComponent<SnakeInitializer>();
+                snakeInitializer.Init(snakeInitInfo, spawnPositions[i]);
+                snakes.Add(snakeInitializer);
             }
+
             gameStartEvent.Raise();
         }
 
