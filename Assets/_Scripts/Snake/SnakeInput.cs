@@ -1,6 +1,7 @@
 using System.Collections;
 using _Scripts.Helpers;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace _Scripts.Snake
 {
@@ -18,6 +19,7 @@ namespace _Scripts.Snake
 
         private SnakeMovement snakeMovement;
         private Direction direction = Direction.Top();
+        private bool reverseDirection;
 
         // Start is called before the first frame update
         private void Awake()
@@ -35,12 +37,17 @@ namespace _Scripts.Snake
             StartCoroutine(Accelerate());
             while (true)
             {
+                if (reverseDirection)
+                {
+                    direction = direction.Opposite();
+                }
+
                 XLogger.Log(direction.changeOfCoord);
                 snakeMovement.Move(direction);
                 yield return new WaitForSeconds(tickInterval);
             }
         }
-        
+
         IEnumerator Accelerate()
         {
             while (true)
@@ -80,7 +87,13 @@ namespace _Scripts.Snake
                 return Direction.Bottom();
             }
 
+
             return direction;
+        }
+
+        public void ReverseControlDirection()
+        {
+            reverseDirection = !reverseDirection;
         }
     }
 }

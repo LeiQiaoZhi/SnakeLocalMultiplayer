@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2450894237632652230}
   - component: {fileID: 7981316535284761943}
-  - component: {fileID: 2879724483569555608}
+  - component: {fileID: 3357759710918040631}
   m_Layer: 0
-  m_Name: Fruit
+  m_Name: Pickup Reverse Direction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,7 +50,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &2879724483569555608
+--- !u!114 &3357759710918040631
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -59,11 +59,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2450894237632652229}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 453877377b86a43e28263147db5d8f62, type: 3}
+  m_Script: {fileID: 11500000, guid: 12f48e9ec186e4252b40c2948b1f9193, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   x: 0
   y: 0
+  reverseDirectionEvent: {fileID: 11400000, guid: ff318b7538f894c2aa65ff3f26de8b84, type: 2}
 --- !u!1 &3876279329898085146
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,8 +138,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: -2413806693520163455, guid: 510f24d9b6f0db6498c0a8eadc95d342, type: 3}
-  m_Color: {r: 1, g: 0.53094816, b: 0.24056602, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 9b63010348f54444188f3f6a268a65d4, type: 3}
+  m_Color: {r: 0.81567395, g: 0.19241722, b: 0.8679245, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

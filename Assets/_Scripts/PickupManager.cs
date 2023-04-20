@@ -6,6 +6,13 @@ using _Scripts.Snake;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+[System.Serializable]
+public class PickupSpawnRecord
+{
+    public GameObject prefab;
+    public int weight = 1;
+}
+
 /// <summary>
 /// singleton class that manages and spawns pickups 
 /// </summary>
@@ -13,6 +20,9 @@ public class PickupManager : MonoBehaviour
 {
     [SerializeField] private float fruitSpawnInterval = 1f;
     [SerializeField] private GameObject fruitPrefab;
+    public List<PickupSpawnRecord> pickupSpawnRecords;
+    [SerializeField] private float pickupSpawnInterval = 1f;
+
     private List<Pickup> pickups = new List<Pickup>();
     private GridSystem gridSystem;
 
@@ -28,6 +38,7 @@ public class PickupManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
         gridSystem = FindObjectOfType<GridSystem>();
     }
 
@@ -35,6 +46,7 @@ public class PickupManager : MonoBehaviour
     public void StartSpawning()
     {
         StartCoroutine(SpawnFruits());
+        StartCoroutine(SpawnPickups());
     }
 
     public bool IsOccupiedByPickup(Vector2Int position)
@@ -55,6 +67,64 @@ public class PickupManager : MonoBehaviour
         Destroy(pickup.gameObject);
     }
 
+    public Vector2Int? GetRandomPosition()
+    {
+        var freePositions = SnakeGameManager.Instance.GetFreePositions();
+        // filter out positions occupied by pickups
+        freePositions.RemoveAll(IsOccupiedByPickup);
+        if (freePositions.Count == 0)
+        {
+            return null;
+        }
+
+        var randomIndex = Random.Range(0, freePositions.Count);
+        var randomPosition = freePositions[randomIndex];
+        return randomPosition;
+    }
+
+    // ReSharper disable Unity.PerformanceAnalysis
+    /// <summary>
+    /// coroutine that spawns pickups other than fruits at random positions
+    /// avoid positions already occupied by snakes or pickups
+    /// </summary>
+    private IEnumerator SpawnPickups()
+    {
+        while (true)
+        {
+            // get random position and spawn
+            var randomPosition = GetRandomPosition().GetValueOrDefault(-Vector2Int.one);
+
+            if (randomPosition.x <= 0) continue;
+
+            // pick random pickups based on weights
+            var pickupPrefab = GetRandomPickupPrefab();
+
+            var pickup = Instantiate(pickupPrefab, (Vector2)randomPosition, Quaternion.identity)
+                .GetComponent<Pickup>();
+            // set position
+            pickup.x = randomPosition.x;
+            pickup.y = randomPosition.y;
+            pickup.transform.position = gridSystem.CellToWorldPosition(randomPosition.x, randomPosition.y);
+
+            pickups.Add(pickup);
+            yield return new WaitForSeconds(pickupSpawnInterval);
+        }
+    }
+
+    private GameObject GetRandomPickupPrefab()
+    {
+        var prefabCandidates = new List<GameObject>();
+        foreach (var spawnRecord in pickupSpawnRecords)
+        {
+            for (int i = 0; i < spawnRecord.weight; i++)
+            {
+                prefabCandidates.Add(spawnRecord.prefab);
+            }
+        }
+        
+        return prefabCandidates[Random.Range(0, prefabCandidates.Count)];
+    }
+
     // ReSharper disable Unity.PerformanceAnalysis
     /// <summary>
     /// coroutine that spawns fruits at random positions
@@ -64,29 +134,20 @@ public class PickupManager : MonoBehaviour
     {
         while (true)
         {
-            var freePositions = SnakeGameManager.Instance.GetFreePositions();
-            // filter out positions occupied by pickups
-            freePositions.RemoveAll(IsOccupiedByPickup);
-            
-            if (freePositions.Count == 0)
-            {
-                yield return null;
-            }
-            else
-            {
-                // get random position and spawn
-                var randomIndex = Random.Range(0, freePositions.Count);
-                var randomPosition = freePositions[randomIndex];
-                var pickup = Instantiate(fruitPrefab, (Vector2)randomPosition, Quaternion.identity)
-                    .GetComponent<Pickup>();
-                // set position
-                pickup.x = randomPosition.x;
-                pickup.y = randomPosition.y;
-                pickup.transform.position = gridSystem.CellToWorldPosition(randomPosition.x, randomPosition.y);
-                
-                pickups.Add(pickup);
-                yield return new WaitForSeconds(fruitSpawnInterval);
-            }
+            // get random position and spawn
+            var randomPosition = GetRandomPosition().GetValueOrDefault(-Vector2Int.one);
+
+            if (randomPosition.x <= 0) continue;
+
+            var pickup = Instantiate(fruitPrefab, (Vector2)randomPosition, Quaternion.identity)
+                .GetComponent<Pickup>();
+            // set position
+            pickup.x = randomPosition.x;
+            pickup.y = randomPosition.y;
+            pickup.transform.position = gridSystem.CellToWorldPosition(randomPosition.x, randomPosition.y);
+
+            pickups.Add(pickup);
+            yield return new WaitForSeconds(fruitSpawnInterval);
         }
     }
 }

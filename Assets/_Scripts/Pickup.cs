@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Pickup : MonoBehaviour
 {
-    public int x;
-    public int y;
+    [HideInInspector] public int x;
+    [HideInInspector] public int y;
 
     public virtual void ApplyEffect(GameObject snake)
     {

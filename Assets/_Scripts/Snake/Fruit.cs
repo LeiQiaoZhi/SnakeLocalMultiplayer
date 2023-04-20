@@ -6,6 +6,7 @@ namespace _Scripts.Snake
     {
         public override void ApplyEffect(GameObject snake)
         {
+            base.ApplyEffect(snake);
             snake.GetComponent<SnakeMovement>().Grow();
         }
     }
