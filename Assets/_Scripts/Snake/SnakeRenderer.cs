@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using _Scripts.Grid;
 using _Scripts.Helpers;
@@ -43,8 +44,24 @@ namespace _Scripts.Snake
             {
                 var worldPos = gridSystem.CellToWorldPosition(
                     bodyPositions[i].x, bodyPositions[i].y);
-                snakeBodies[i].transform.position = worldPos;
+                // snakeBodies[i].transform.position = worldPos;
+                float tickTime = GetComponent<SnakeInput>().tickInterval;
+                StartCoroutine(MoveBody(snakeBodies[i], worldPos, tickTime));
             }
+        }
+
+        private IEnumerator MoveBody(GameObject snakeBody, Vector2 worldPos, float tickTime)
+        {
+            float elapsedTime = 0;
+            Vector2 startPos = snakeBody.transform.position;
+            while (elapsedTime < tickTime)
+            {
+                snakeBody.transform.position = Vector2.Lerp(startPos, worldPos, (elapsedTime / tickTime));
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+            // force sync
+            snakeBody.transform.position = worldPos;
         }
 
         public void Grow()
