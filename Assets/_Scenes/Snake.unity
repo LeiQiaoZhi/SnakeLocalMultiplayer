@@ -3112,12 +3112,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e119424b472c4f19818fd529c5553ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fruitSpawnInterval: 4
+  fruitSpawnInterval: 6
   fruitPrefab: {fileID: 2450894237632652229, guid: 2cd45c10f30d44f158e8672284849e15, type: 3}
   pickupSpawnRecords:
   - prefab: {fileID: 2450894237632652229, guid: e92993f27b5ec4e4b8e64eb21776c11d, type: 3}
     weight: 1
-  pickupSpawnInterval: 4
+  pickupSpawnInterval: 10
 --- !u!4 &437278414
 Transform:
   m_ObjectHideFlags: 0
