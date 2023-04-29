@@ -11,6 +11,7 @@ namespace _Scripts.Managers
         [SerializeField] private bool testMessages;
         [SerializeField] GameObject messageObjectPrefab;
         [SerializeField] GameObject popupObjectPrefab;
+        [SerializeField] GameObject infoMessageObjectPrefab;
         [SerializeField] private GameObject messageCanvas;
 
         public static MessageManager Instance;
@@ -49,6 +50,15 @@ namespace _Scripts.Managers
             {
                 Destroy(gameObject);
             }
+        }
+        
+        public void DisplayInfoMessage(string text, Color? textColor = null, float? duration = null, Vector2 position = default)
+        {
+            GameObject messageGo = Instantiate(infoMessageObjectPrefab);
+            messageGo.transform.position = position;
+            InfoObject m = messageGo.GetComponent<InfoObject>();
+            m.Init(text, textColor, duration);
+            Destroy(messageGo, 10f);
         }
 
         public void DisplayMessage(string text, Color? textColor = null, float? duration = null)

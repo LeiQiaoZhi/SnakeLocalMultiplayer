@@ -120,5 +120,15 @@ namespace _Scripts.Grid
             }
             return spawnPositions;
         }
+        
+        public bool IsObstacle(int x, int y)
+        {
+            var cell = GetCell(x, y);
+            if (cell == null)
+            {
+                return false;
+            }
+            return cell.isObstacle;
+        }
     }
 }

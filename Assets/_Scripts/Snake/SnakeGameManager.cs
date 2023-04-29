@@ -17,12 +17,12 @@ namespace _Scripts.Snake
     {
         public GameEvent gameStartEvent;
         public GameObject snakePrefab;
-        
+
         private List<SnakeInitializer> snakes = new List<SnakeInitializer>();
         private GridSystem gridSystem;
         private int height;
         private int width;
-        private List<SnakeInitializer> aliveSnakes= new List<SnakeInitializer>();
+        private List<SnakeInitializer> aliveSnakes = new List<SnakeInitializer>();
 
         public static SnakeGameManager Instance { get; private set; }
 
@@ -57,12 +57,12 @@ namespace _Scripts.Snake
                 snakeInitializer.Init(snakeInitInfo, spawnPositions[i]);
                 snakes.Add(snakeInitializer);
             }
-            
+
             aliveSnakes = snakes.ToList();
 
             gameStartEvent.Raise();
         }
-        
+
         public List<SnakeInitializer> GetSnakes()
         {
             return snakes;
@@ -102,6 +102,11 @@ namespace _Scripts.Snake
         public bool IsColliding(int x, int y)
         {
             if (x < 0 || x >= width || y < 0 || y >= height)
+            {
+                return true;
+            }
+
+            if (gridSystem.IsObstacle(x, y))
             {
                 return true;
             }
@@ -164,13 +169,31 @@ namespace _Scripts.Snake
                     GameOver(deadMovement.GetComponent<SnakeInitializer>());
                     return;
                 }
-                
+
                 // draw between already dead snakes
                 Draw(candidates);
                 return;
-
             }
-            
+
+            if (aliveSnakes.Count == 1)
+            {
+                var alive = aliveSnakes[0];
+                var candidates = ScoreManager.Instance.GetHighestScoreSnakes();
+                if (candidates.Count == 1)
+                {
+                    var message = "";
+                    if (alive.GetComponent<SnakeInitializer>().GetLength() == candidates[0].GetLength())
+                    {
+                        message = $"{alive.gameObject.name} has already won";   
+                    }
+                    else
+                    {
+                        message = $"{alive.gameObject.name} needs to have higher score than {candidates[0].GetLength()} to win";
+                    }
+                    MessageManager.Instance.DisplayInfoMessage(message, alive.GetColor());
+                }
+            }
+
             deadMovement.gameObject.SetActive(false);
         }
     }

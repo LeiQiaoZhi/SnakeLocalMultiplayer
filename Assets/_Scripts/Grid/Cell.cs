@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,8 +12,23 @@ namespace _Scripts.Grid
         public SpriteRenderer spriteRenderer;
         public Color color1;
         public Color color2;
+        public bool isObstacle = false;
+        public Color obstacleColor = Color.black;
 
         private GridSystem gridSystem;
+
+        public IEnumerator TurnToObstacle(float duration)
+        {
+            // change color linearly over time
+            float timeUntilChanged = Time.time + duration;
+            while (Time.time < timeUntilChanged)
+            {
+                spriteRenderer.color = Color.Lerp(spriteRenderer.color, obstacleColor, (Time.time - (timeUntilChanged - duration)) / duration);
+                yield return null;
+            }
+            spriteRenderer.color = obstacleColor;
+            isObstacle = true;
+        }
 
         public void Init(int _x, int _y, GridSystem grid)
         {

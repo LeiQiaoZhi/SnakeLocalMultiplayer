@@ -9,6 +9,7 @@ namespace _Scripts.Snake
     public class SnakeMovement : MonoBehaviour
     {
         public GameEvent growEvent;
+
         /// <summary>
         /// coordinates of body cells in grid system
         /// </summary>
@@ -16,6 +17,7 @@ namespace _Scripts.Snake
 
         private Direction currentDirection = Direction.Top();
         private SnakeRenderer snakeRenderer;
+        private bool reverseHeadTail = false;
 
         private void Awake()
         {
@@ -56,10 +58,20 @@ namespace _Scripts.Snake
                 PickupManager.Instance.ApplyPickup(newHeadPosition, gameObject);
             }
 
-            bodyPositions.Insert(0, newHeadPosition);
-            bodyPositions.RemoveAt(bodyPositions.Count - 1);
+            if (reverseHeadTail)
+            {
+                bodyPositions.Reverse();
+                currentDirection = new Direction(bodyPositions[0] - bodyPositions[1]);
+                reverseHeadTail = false;
+            }
+            else
+            {
+                bodyPositions.Insert(0, newHeadPosition);
+                bodyPositions.RemoveAt(bodyPositions.Count - 1);
+            }
 
             snakeRenderer.RenderSnake(bodyPositions);
+
             if (gameOver)
             {
                 SnakeGameManager.Instance.SnakeDies(this);
@@ -73,12 +85,19 @@ namespace _Scripts.Snake
 
         public void Grow()
         {
-            bodyPositions.Add(bodyPositions[^1] + bodyPositions[^1] - bodyPositions[^2]);
-            snakeRenderer.Grow();
+            var position = bodyPositions[^1] + (bodyPositions[^1] - bodyPositions[^2]);
+            bodyPositions.Add(position);
+            snakeRenderer.Grow(position);
             snakeRenderer.RenderSnake(bodyPositions);
             growEvent.Raise();
         }
-        
+
+
+        public void ReverseHeadTail()
+        {
+            reverseHeadTail = true;
+        }
+
         public int GetLength()
         {
             return bodyPositions.Count;

@@ -82,6 +82,14 @@ public class PickupManager : MonoBehaviour
         return randomPosition;
     }
 
+    public void TurnRandomCellToObstacle()
+    {
+        var randomPosition = GetRandomPosition().GetValueOrDefault(-Vector2Int.one);
+        if (randomPosition.x <= 0) return;
+        var cell = gridSystem.GetCell(randomPosition.x, randomPosition.y);
+        cell.StartCoroutine(cell.TurnToObstacle(2f));
+    }
+
     // ReSharper disable Unity.PerformanceAnalysis
     /// <summary>
     /// coroutine that spawns pickups other than fruits at random positions

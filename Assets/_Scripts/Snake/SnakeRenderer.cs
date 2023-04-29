@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using _Scripts.Grid;
 using _Scripts.Helpers;
+using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace _Scripts.Snake
@@ -16,6 +18,7 @@ namespace _Scripts.Snake
 
         private List<GameObject> snakeBodies;
         private GridSystem gridSystem;
+        private GameObject indicatorObject;
 
         private void Awake()
         {
@@ -30,6 +33,11 @@ namespace _Scripts.Snake
                 var body = Instantiate((i == 0) ? snakeHeadPrefab : snakeBodyPrefab, transform);
                 body.GetComponentInChildren<SpriteRenderer>().color = (i == 0) ? headColor : bodyColor;
                 snakeBodies.Add(body);
+                if (i == 0)
+                {
+                    indicatorObject = body.GetComponentInChildren<Canvas>().gameObject;
+                    SetReverseIndicator();
+                }
             }
         }
 
@@ -64,9 +72,11 @@ namespace _Scripts.Snake
             snakeBody.transform.position = worldPos;
         }
 
-        public void Grow()
+        public void Grow(Vector2Int position)
         {
-            var body = Instantiate(snakeBodyPrefab, transform);
+            var worldPosition= gridSystem.CellToWorldPosition(position.x,position.y);
+            var body = Instantiate(snakeBodyPrefab, worldPosition, quaternion.identity);
+            body.transform.SetParent(transform);
             body.GetComponentInChildren<SpriteRenderer>().color = bodyColor;
             snakeBodies.Add(body);
         }
@@ -80,6 +90,15 @@ namespace _Scripts.Snake
         public Color GetColor()
         {
             return headColor;
+        }
+
+        public void SetReverseIndicator()
+        {
+            if (!indicatorObject)
+                return;
+            var indicator = indicatorObject.GetComponentInChildren<TextMeshProUGUI>();   
+            if (indicator)
+                indicator.enabled = !indicator.enabled;
         }
     }
 }
